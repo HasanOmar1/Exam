@@ -17,3 +17,22 @@ main {
   align-items: center;
   min-height: 100dvh;
 }
+
+section {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
+}
+
+section form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 200px;
+}
+
+form input {
+  padding: 10px 20px;
+}
