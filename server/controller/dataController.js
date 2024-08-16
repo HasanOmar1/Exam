@@ -18,6 +18,12 @@ export const fetchData = async (req, res, next) => {
 
     for (const site of urlsArray) {
       if (!isURL(site)) {
+        data.push({
+          url: site,
+          title: "Error",
+          description: "Error retrieving data",
+          img: "Error retrieving data",
+        });
         continue;
       }
 
@@ -63,7 +69,7 @@ export const fetchData = async (req, res, next) => {
 
         data.push(dataInfo);
       } catch (error) {
-        console.error(`Error retrieving data from ${site}:`);
+        console.error(`Error retrieving data from ${site}`);
 
         data.push({
           url: site,
@@ -75,7 +81,7 @@ export const fetchData = async (req, res, next) => {
     }
 
     await browser.close();
-    res.send(data);
+    res.json(data);
   } catch (error) {
     next(error);
   }
