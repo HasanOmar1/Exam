@@ -1,4 +1,4 @@
-import puppeteer from "puppeteer";
+import puppeteer, { executablePath } from "puppeteer";
 import STATUS_CODE from "../constants/statusCodes.js";
 import { isURL } from "../utils/isURL.js";
 
@@ -24,7 +24,12 @@ export const fetchData = async (req, res, next) => {
         "--no-first-run",
         "--no-zygote",
         "--disable-gpu",
+        "--single-process",
       ],
+      executablePath:
+        process.env.NODE_ENV === "prodction"
+          ? process.env.PUPPETEER_EXECUTABLE_PATH
+          : puppeteer.executablePath(),
     });
     const page = await browser.newPage();
 
