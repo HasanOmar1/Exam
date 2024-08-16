@@ -14,16 +14,38 @@ export const fetchData = async (req, res, next) => {
   const data = [];
   try {
     const browser = await puppeteer.launch({
-      headless: "new",
+      headless: true,
       defaultViewport: { width: 1280, height: 800 },
-      args: ["--disable-setuid-sandbox", "--no-sandbox", "--no-zygote"],
+      args: [
+        "--disable-setuid-sandbox",
+        "--no-sandbox",
+        "--no-zygote",
+        "--disable-dev-shm-usage",
+        "--disable-accelerated-2d-canvas",
+        "--no-first-run",
+        "--disable-gpu",
+      ],
       executablePath:
         process.env.NODE_ENV === "production"
           ? process.env.PUPPETEER_EXECUTABLE_PATH
           : puppeteer.executablePath(),
     });
     const page = await browser.newPage();
+    page.setDefaultNavigationTimeout(120000);
+    await page.setUserAgent(
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    );
 
+    await page.setRequestInterception(true);
+
+    // Intercept requests to ignore loading videos
+    page.on("request", (request) => {
+      if (request.resourceType() === "video") {
+        request.abort();
+      } else {
+        request.continue();
+      }
+    });
     for (const site of urlsArray) {
       if (!isURL(site)) {
         data.push({
@@ -37,13 +59,15 @@ export const fetchData = async (req, res, next) => {
 
       try {
         await page.goto(site, {
-          timeout: 20000,
+          timeout: 60000,
           waitUntil: "networkidle2",
         });
 
+        await page.waitForTimeout(3000);
+
         await page.waitForSelector(
           `title , meta[name="title"] , meta[property="og:title"] , img`,
-          { timeout: 20000 }
+          { timeout: 60000 }
         );
 
         const dataInfo = await page.evaluate((pageUrl) => {
