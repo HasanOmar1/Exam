@@ -14,7 +14,7 @@ export const fetchData = async (req, res, next) => {
   const data = [];
   try {
     const browser = await puppeteer.launch({
-      headless: true,
+      headless: false,
       defaultViewport: { width: 1280, height: 800 },
       args: ["--disable-setuid-sandbox", "--no-sandbox", "--no-zygote"],
       executablePath:
