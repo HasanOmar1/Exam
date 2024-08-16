@@ -1,4 +1,4 @@
-import puppeteer, { executablePath } from "puppeteer";
+import puppeteer from "puppeteer";
 import STATUS_CODE from "../constants/statusCodes.js";
 import { isURL } from "../utils/isURL.js";
 
@@ -14,7 +14,7 @@ export const fetchData = async (req, res, next) => {
   const data = [];
   try {
     const browser = await puppeteer.launch({
-      headless: "new",
+      headless: true,
       defaultViewport: { width: 1280, height: 800 },
       args: [
         "--no-sandbox",
@@ -26,7 +26,7 @@ export const fetchData = async (req, res, next) => {
         "--disable-gpu",
       ],
       executablePath:
-        process.env.NODE_ENV === "prodction"
+        process.env.NODE_ENV === "production"
           ? process.env.PUPPETEER_EXECUTABLE_PATH
           : puppeteer.executablePath(),
     });
@@ -46,7 +46,7 @@ export const fetchData = async (req, res, next) => {
       try {
         await page.goto(site, {
           timeout: 20000,
-          waitUntil: "networkidle0",
+          waitUntil: "networkidle2",
         });
 
         await page.waitForSelector(
@@ -55,6 +55,7 @@ export const fetchData = async (req, res, next) => {
         );
 
         const dataInfo = await page.evaluate((pageUrl) => {
+          //
           const titleElement = document.querySelector("title")?.innerText;
           const metaTitleElement = document.querySelector('meta[name="title"]');
           const ogMetaTitleElement = document.querySelector(
