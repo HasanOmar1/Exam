@@ -17,13 +17,10 @@ export const fetchData = async (req, res, next) => {
       headless: true,
       defaultViewport: { width: 1280, height: 800 },
       args: [
-        "--no-sandbox",
         "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-accelerated-2d-canvas",
-        "--no-first-run",
+        "--no-sandbox",
+        "--single-process",
         "--no-zygote",
-        "--disable-gpu",
       ],
       executablePath:
         process.env.NODE_ENV === "production"
@@ -97,6 +94,8 @@ export const fetchData = async (req, res, next) => {
         });
       }
     }
+
+    console.log({ data });
 
     await browser.close();
     res.json(data);
