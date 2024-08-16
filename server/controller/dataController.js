@@ -1,10 +1,6 @@
 import puppeteer from "puppeteer";
 import STATUS_CODE from "../constants/statusCodes.js";
-
-const url1 = "https://crossfire.z8games.com/";
-const url2 = "https://combatarms-c.valofe.com/";
-
-// const urls = [url1, url2];
+import { isURL } from "../utils/isURL.js";
 
 export const fetchData = async (req, res, next) => {
   const { urls } = req.query;
@@ -12,7 +8,7 @@ export const fetchData = async (req, res, next) => {
 
   if (!urlsArray.length) {
     res.status(STATUS_CODE.NOT_FOUND);
-    throw new Error("Please provide an url");
+    throw new Error({ error: "Please provide a URL" });
   }
 
   const data = [];
@@ -20,41 +16,67 @@ export const fetchData = async (req, res, next) => {
     const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
 
-    for (let sites of urls) {
-      await page.goto(sites);
+    for (const site of urlsArray) {
+      if (!isURL(site)) {
+        continue;
+      }
 
-      await page.waitForSelector(
-        `meta[name="title"] , meta[property="og:title"]`
-      );
+      try {
+        await page.goto(site, {
+          waitUntil: "domcontentloaded",
+          timeout: 10000,
+        });
 
-      const dataInfo = await page.evaluate((pageUrl) => {
-        const titleElement = document.querySelector("title")?.innerText;
-        const metaTitleElement = document.querySelector('meta[name="title"]');
-        const ogMetaTitleElement = document.querySelector(
-          'meta[property="og:title"]'
+        await page.waitForSelector(
+          `title , meta[name="title"] , meta[property="og:title"] ,  img`,
+          { timeout: 5000 }
         );
 
-        const title = metaTitleElement
-          ? metaTitleElement.getAttribute("content")
-          : ogMetaTitleElement
-          ? ogMetaTitleElement.getAttribute("content")
-          : titleElement;
+        const dataInfo = await page.evaluate((pageUrl) => {
+          const titleElement = document.querySelector("title")?.innerText;
+          const metaTitleElement = document.querySelector('meta[name="title"]');
+          const ogMetaTitleElement = document.querySelector(
+            'meta[property="og:title"]'
+          );
 
-        const description = document
-          .querySelector(`meta[name="description"]`)
-          ?.getAttribute("content");
+          const title = metaTitleElement
+            ? metaTitleElement.getAttribute("content")
+            : ogMetaTitleElement
+            ? ogMetaTitleElement.getAttribute("content")
+            : titleElement;
 
-        const img = document.querySelector(`img`).src;
+          const description =
+            document
+              .querySelector(`meta[name="description"]`)
+              ?.getAttribute("content") || "No description";
 
-        return { url: pageUrl, title, description, img };
-      }, sites);
+          const img =
+            document.querySelector(`main img`)?.src ??
+            document.querySelector(`section img`)?.src ??
+            document.querySelector(`div img`)?.src ??
+            document.querySelector(`a img`)?.src ??
+            document.querySelector(`img`)?.src ??
+            "No img found";
 
-      data.push(dataInfo);
+          return { url: pageUrl, title, description, img };
+        }, site);
+
+        data.push(dataInfo);
+      } catch (error) {
+        console.error(`Error retrieving data from ${site}:`);
+
+        data.push({
+          url: site,
+          title: "Error",
+          description: "Error retrieving data",
+          img: "Error retrieving data",
+        });
+      }
     }
-    console.log({ data });
+
     await browser.close();
     res.send(data);
   } catch (error) {
-    next();
+    next(error);
   }
 };
