@@ -4,9 +4,9 @@ import { isURL } from "../utils/isURL.js";
 
 export const fetchData = async (req, res, next) => {
   const { urls } = req.query;
-  const urlsArray = Array.isArray(urls) ? urls : [urls];
+  const arrOfUrls = Array.isArray(urls) ? urls : [urls];
 
-  if (!urlsArray.length) {
+  if (!arrOfUrls.length) {
     res.status(STATUS_CODE.NOT_FOUND);
     throw new Error({ error: "Please provide a URL" });
   }
@@ -14,7 +14,7 @@ export const fetchData = async (req, res, next) => {
   const data = [];
   try {
     const browser = await puppeteer.launch({
-      headless: true,
+      headless: false,
       defaultViewport: { width: 1280, height: 800 },
       args: [
         "--disable-setuid-sandbox",
@@ -31,10 +31,6 @@ export const fetchData = async (req, res, next) => {
           : puppeteer.executablePath(),
     });
     const page = await browser.newPage();
-    page.setDefaultNavigationTimeout(120000);
-    await page.setUserAgent(
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-    );
 
     await page.setRequestInterception(true);
 
@@ -46,7 +42,8 @@ export const fetchData = async (req, res, next) => {
         request.continue();
       }
     });
-    for (const site of urlsArray) {
+
+    for (const site of arrOfUrls) {
       if (!isURL(site)) {
         data.push({
           url: site,
@@ -59,15 +56,13 @@ export const fetchData = async (req, res, next) => {
 
       try {
         await page.goto(site, {
-          timeout: 60000,
-          waitUntil: "networkidle2",
+          timeout: 120000,
+          waitUntil: "load",
         });
-
-        await page.waitForTimeout(3000);
 
         await page.waitForSelector(
           `title , meta[name="title"] , meta[property="og:title"] , img`,
-          { timeout: 60000 }
+          { timeout: 120000 }
         );
 
         const dataInfo = await page.evaluate((pageUrl) => {

@@ -29,10 +29,44 @@ section {
 section form {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 30px;
-  width: 200px;
+  width: 300px;
+}
+
+form select {
+  width: 100px;
+  text-align: center;
+}
+
+form input,
+form select,
+form button {
+  padding: 10px;
+  border: none;
+  font-size: 1.2rem;
 }
 
 form input {
-  padding: 10px 20px;
+  width: 100%;
+}
+form input:focus {
+  outline: 3px solid crimson;
+}
+
+form select:focus {
+  outline: none;
+}
+
+form button {
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  transition: 0.2s;
+}
+
+form button:hover {
+  background-color: darkgreen;
+  color: white;
 }
