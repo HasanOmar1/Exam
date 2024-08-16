@@ -24,7 +24,6 @@ export const fetchData = async (req, res, next) => {
         "--no-first-run",
         "--no-zygote",
         "--disable-gpu",
-        "--single-process",
       ],
       executablePath:
         process.env.NODE_ENV === "prodction"
@@ -45,7 +44,10 @@ export const fetchData = async (req, res, next) => {
       }
 
       try {
-        await page.goto(site);
+        await page.goto(site, {
+          timeout: 20000,
+          waitUntil: "networkidle0",
+        });
 
         await page.waitForSelector(
           `title , meta[name="title"] , meta[property="og:title"] , img`,
@@ -99,7 +101,5 @@ export const fetchData = async (req, res, next) => {
     res.json(data);
   } catch (error) {
     next(error);
-  } finally {
-    await browser.close();
   }
 };
