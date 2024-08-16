@@ -13,7 +13,19 @@ export const fetchData = async (req, res, next) => {
 
   const data = [];
   try {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({
+      headless: "new",
+      defaultViewport: { width: 1280, height: 800 },
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-accelerated-2d-canvas",
+        "--no-first-run",
+        "--no-zygote",
+        "--disable-gpu",
+      ],
+    });
     const page = await browser.newPage();
 
     for (const site of urlsArray) {
@@ -28,14 +40,11 @@ export const fetchData = async (req, res, next) => {
       }
 
       try {
-        await page.goto(site, {
-          waitUntil: "domcontentloaded",
-          timeout: 10000,
-        });
+        await page.goto(site);
 
         await page.waitForSelector(
-          `title , meta[name="title"] , meta[property="og:title"] ,  img`,
-          { timeout: 5000 }
+          `title , meta[name="title"] , meta[property="og:title"] , img`,
+          { timeout: 20000 }
         );
 
         const dataInfo = await page.evaluate((pageUrl) => {
@@ -70,6 +79,7 @@ export const fetchData = async (req, res, next) => {
         data.push(dataInfo);
       } catch (error) {
         console.error(`Error retrieving data from ${site}`);
+        console.error("Stack trace:", error.stack);
 
         data.push({
           url: site,
@@ -84,5 +94,7 @@ export const fetchData = async (req, res, next) => {
     res.json(data);
   } catch (error) {
     next(error);
+  } finally {
+    await browser.close();
   }
 };
