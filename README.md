@@ -80,10 +80,13 @@ npm run dev
 
 #### Frontend
 
+- Vite
+- React
 - Typescript
 
 #### Backend
 
+- NodeJS
 - ExpressJS
 - Express-rate-limit
 - Cors
