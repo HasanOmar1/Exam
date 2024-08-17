@@ -19,7 +19,7 @@ export const fetchData = async (req, res, next) => {
 
     const browser = await puppeteer.launch({
       headless: true,
-      timeout: 60000,
+      timeout: 120000,
       defaultViewport: null,
       args: [
         "--disable-setuid-sandbox",
@@ -67,7 +67,7 @@ export const fetchData = async (req, res, next) => {
 
       try {
         await page.goto(site, {
-          timeout: 60000,
+          timeout: 120000,
           waitUntil: "domcontentloaded",
         });
 
