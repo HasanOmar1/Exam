@@ -89,3 +89,11 @@ npm run dev
 - Chai
 - Supertest
 - Helmet
+
+---
+
+#### Route example for testing
+
+```
+[server Link]/fetch-metadata?urls=https://www.facebook.com/&urls=https://www.google.com/&urls=https://www.gotolstoy.com/&urls=https://www.tesla.com/
+```
