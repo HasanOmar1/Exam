@@ -61,7 +61,7 @@ export const fetchData = async (req, res, next) => {
         });
 
         await page.waitForSelector(
-          `title , meta[name="title"] , meta[property="og:title"] , img`
+          `title , meta[name="description"], meta[name="title"] , meta[property="og:title"] , img`
         );
 
         await page.$eval("title", (el) => el.scrollIntoView());
