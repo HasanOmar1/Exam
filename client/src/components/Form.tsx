@@ -1,39 +1,69 @@
 import { useState } from "react";
-import Inputs from "./Inputs";
+import { useFetchDataContext } from "../context/FetchData";
 
 const Form = () => {
-  const [numOfInputs, setNumOfInputs] = useState<number>(3);
+  const { fetchData, loading } = useFetchDataContext();
 
-  const arrOfNums = [];
+  const [inputsValues, setInputsValues] = useState({
+    firstInputValue: "",
+    secondInputValue: "",
+    thirdInputValue: "",
+  });
 
-  for (let i = 0; i < numOfInputs; i++) {
-    arrOfNums.push(i);
-  }
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    input: string
+  ) => {
+    setInputsValues((prev) => ({ ...prev, [input]: e.target.value }));
+  };
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    fetchData(
+      `urls=${inputsValues.firstInputValue}&urls=${inputsValues.secondInputValue}&urls=${inputsValues.thirdInputValue}`
+    );
+
+    setInputsValues({
+      firstInputValue: "",
+      secondInputValue: "",
+      thirdInputValue: "",
+    });
   }
 
   return (
     <section>
-      <h1>Choose How many inputs you want</h1>
-      <form onSubmit={handleSubmit}>
-        <select
-          value={numOfInputs}
-          onChange={(e) => setNumOfInputs(+e.target.value)}
-          name="numOfInput"
-          id="numOfInput"
-        >
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-        </select>
-        {arrOfNums.map((n) => (
-          <Inputs key={n} />
-        ))}
+      <div className="title-container">
+        <h1>Welcome to meta data scrapper using puppeteer</h1>
+        <h3>Enter the URLs you want to scrap</h3>
+      </div>
 
-        <button type="submit" title="Click to fetch data">
+      <form onSubmit={handleSubmit}>
+        <input
+          required
+          type="url"
+          placeholder="URL"
+          value={inputsValues?.firstInputValue}
+          onChange={(e) => handleInputChange(e, "firstInputValue")}
+          disabled={loading}
+        />
+        <input
+          required
+          type="url"
+          placeholder="URL"
+          value={inputsValues?.secondInputValue}
+          onChange={(e) => handleInputChange(e, "secondInputValue")}
+          disabled={loading}
+        />
+        <input
+          required
+          type="url"
+          placeholder="URL"
+          value={inputsValues?.thirdInputValue}
+          onChange={(e) => handleInputChange(e, "thirdInputValue")}
+          disabled={loading}
+        />
+
+        <button type="submit" title="Click to fetch data" disabled={loading}>
           Fetch Data
         </button>
       </form>

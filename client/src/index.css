@@ -24,6 +24,7 @@ section {
   gap: 30px;
   justify-content: center;
   align-items: center;
+  margin-top: 50px;
 }
 
 section form {
@@ -33,6 +34,11 @@ section form {
   align-items: center;
   gap: 30px;
   width: 300px;
+}
+
+.title-container * {
+  text-align: center;
+  padding: 10px;
 }
 
 form select {
@@ -46,13 +52,18 @@ form button {
   padding: 10px;
   border: none;
   font-size: 1.2rem;
+  border-radius: 5px;
 }
 
 form input {
   width: 100%;
 }
+
+form input:disabled {
+  background-color: rgb(128, 45, 61);
+}
 form input:focus {
-  outline: 3px solid crimson;
+  outline: 5px solid darkgoldenrod;
 }
 
 form select:focus {
@@ -69,4 +80,77 @@ form button {
 form button:hover {
   background-color: darkgreen;
   color: white;
+}
+
+form button:disabled {
+  background-color: rgba(255, 0, 0, 0.524);
+  color: rgb(212, 209, 209);
+}
+
+.data-container {
+  display: flex;
+  width: 70%;
+  justify-content: center;
+  align-items: center;
+  gap: 70px;
+  margin-top: 50px;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
+}
+
+.data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 500px;
+  border-radius: 20px;
+  width: 600px;
+  background-color: darkslategrey;
+  text-align: center;
+  padding-top: 30px;
+  border: 3px solid rgb(150, 97, 97);
+}
+
+.data div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.data h4 {
+  letter-spacing: 2px;
+  font-weight: 600;
+  color: bisque;
+  font-size: 1.4rem;
+}
+
+.data p,
+.data #url {
+  width: fit-content;
+  text-align: center;
+  letter-spacing: 1px;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+  font-size: 1rem;
+  padding: 0 30px;
+}
+.data img {
+  max-width: 400px;
+  max-height: 400px;
+  object-fit: contain;
+  padding-bottom: 30px;
+}
+
+.data #url {
+  color: yellowgreen;
+  transition: 0.2s;
+}
+.data #url:hover {
+  color: lightgreen;
+}
+
+.loading {
+  padding-top: 30px;
 }

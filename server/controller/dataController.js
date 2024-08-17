@@ -15,7 +15,7 @@ export const fetchData = async (req, res, next) => {
   try {
     const browser = await puppeteer.launch({
       headless: true,
-      timeout: 0,
+      timeout: 30000,
       defaultViewport: null,
       args: [
         "--disable-setuid-sandbox",
@@ -57,7 +57,7 @@ export const fetchData = async (req, res, next) => {
 
       try {
         await page.goto(site, {
-          timeout: 0,
+          timeout: 30000,
           waitUntil: "networkidle2",
         });
 
