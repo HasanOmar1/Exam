@@ -72,7 +72,7 @@ export const fetchData = async (req, res, next) => {
         });
 
         await page.waitForSelector(
-          `title , meta[name="description"], meta[name="title"] , meta[property="og:title"] , img`
+          `title , meta[name="description"], meta[name="title"] , meta[property="og:title"] , meta[property="og:image"]`
         );
 
         const dataInfo = await page.evaluate((pageUrl) => {
@@ -94,6 +94,9 @@ export const fetchData = async (req, res, next) => {
               ?.getAttribute("content") || "No description";
 
           const img =
+            document
+              .querySelector(`meta[property="og:image"]`)
+              ?.getAttribute("content") ??
             document.querySelector(`main img`)?.src ??
             document.querySelector(`section img`)?.src ??
             document.querySelector(`div img`)?.src ??
@@ -116,6 +119,8 @@ export const fetchData = async (req, res, next) => {
         });
       }
     }
+
+    console.log({ data });
 
     await browser.close();
     res.json(data);
