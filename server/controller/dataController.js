@@ -110,7 +110,7 @@ export const fetchData = async (req, res, next) => {
       }
     }
 
-    console.log({ data });
+    // console.log({ data });
 
     await browser.close();
     res.json(data);

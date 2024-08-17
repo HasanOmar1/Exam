@@ -9,14 +9,13 @@ const Form = () => {
     thirdInputValue: "",
   });
 
-  // const inputRef =
-  //   useRef<React.MutableRefObject<HTMLInputElement | undefined>>();
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // useEffect(() => {
-  //   if (inputRef.current) {
-  //     inputRef.current.focus();
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -47,7 +46,7 @@ const Form = () => {
 
       <form onSubmit={handleSubmit}>
         <input
-          // ref={inputRef}
+          ref={inputRef}
           required
           type="url"
           placeholder="URL"
