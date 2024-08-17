@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useFetchDataContext } from "../context/FetchData";
+import { isURL } from "../utils/isURL";
 
 const Form = () => {
   const { fetchData, loading } = useFetchDataContext();
@@ -8,6 +9,7 @@ const Form = () => {
     secondInputValue: "",
     thirdInputValue: "",
   });
+  const [invalidUrlMsg, setInvalidUrlMsg] = useState<string>("");
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -26,22 +28,35 @@ const Form = () => {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    fetchData(
-      `urls=${inputsValues.firstInputValue}&urls=${inputsValues.secondInputValue}&urls=${inputsValues.thirdInputValue}`
-    );
 
-    setInputsValues({
-      firstInputValue: "",
-      secondInputValue: "",
-      thirdInputValue: "",
-    });
+    if (
+      isURL(inputsValues.firstInputValue) &&
+      isURL(inputsValues.secondInputValue) &&
+      isURL(inputsValues.thirdInputValue)
+    ) {
+      fetchData(
+        `urls=${inputsValues.firstInputValue}&urls=${inputsValues.secondInputValue}&urls=${inputsValues.thirdInputValue}`
+      );
+
+      setInputsValues({
+        firstInputValue: "",
+        secondInputValue: "",
+        thirdInputValue: "",
+      });
+    } else {
+      setInvalidUrlMsg("Please provide valid URLs");
+    }
   }
 
   return (
     <section>
       <div className="title-container">
-        <h1>Welcome to meta data scrapper using puppeteer</h1>
+        <h1>
+          Welcome to the <span className="important">Meta-Data</span> scrapper
+          using puppeteer
+        </h1>
         <h3>Enter the URLs you want to scrap</h3>
+        {<p id="error-msg">{invalidUrlMsg}</p>}
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -49,7 +64,7 @@ const Form = () => {
           ref={inputRef}
           required
           type="url"
-          placeholder="URL"
+          placeholder="Enter a valid URL"
           value={inputsValues?.firstInputValue}
           onChange={(e) => handleInputChange(e, "firstInputValue")}
           disabled={loading}
@@ -57,7 +72,7 @@ const Form = () => {
         <input
           required
           type="url"
-          placeholder="URL"
+          placeholder="Enter a valid URL"
           value={inputsValues?.secondInputValue}
           onChange={(e) => handleInputChange(e, "secondInputValue")}
           disabled={loading}
@@ -65,7 +80,7 @@ const Form = () => {
         <input
           required
           type="url"
-          placeholder="URL"
+          placeholder="Enter a valid URL"
           value={inputsValues?.thirdInputValue}
           onChange={(e) => handleInputChange(e, "thirdInputValue")}
           disabled={loading}
