@@ -45,13 +45,8 @@ export const fetchData = async (req, res, next) => {
 
     for (const site of arrOfUrls) {
       if (!isURL(site)) {
-        data.push({
-          url: site,
-          title: "Error",
-          description: "Error retrieving data",
-          img: "Error retrieving data",
-        });
-        continue;
+        res.status(STATUS_CODE.BAD_REQUEST);
+        throw new Error("Please provide valid URLs");
       }
 
       try {
@@ -98,15 +93,9 @@ export const fetchData = async (req, res, next) => {
 
         data.push(dataInfo);
       } catch (error) {
+        next(error);
         console.error(`Error retrieving data from ${site}`);
         console.error("Stack trace:", error.stack);
-
-        data.push({
-          url: site,
-          title: "Error",
-          description: "Error retrieving data",
-          img: "Error retrieving data",
-        });
       }
     }
 
