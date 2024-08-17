@@ -24,7 +24,7 @@ Things to know:
 - Scraping locally will scrape pretty quickly.
 - The Design of the UI was very simple, I didnt put much effort on it.
 - I did not test the frontend because I never tried to learn how to even though I'm a fast learner :).
-- I had many difficulties with running puppeteer on Render because it needs chromium to work, but after some research I learned that i have to use Docker to make it work.
+- I had many difficulties with running puppeteer on Render because it requires chromium to run, but after some research I learned that i have to use Docker to make it work.
 - I also had many difficulties with fetching the data using Render because it kept giving me navigation timeout and sometimes I didn't get the correct response because of the sites bot detection, but I fixed it by installing puppeteer extra and puppeteer-extra-plugin-stealth to avoid the bots.
 
 ###### - If the scraping takes more than 2 minutes then its probably the server is sleeping , give it some time ^
