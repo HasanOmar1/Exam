@@ -118,6 +118,8 @@ form button:disabled {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  justify-content: center;
+  align-items: center;
 }
 
 .data h4 {
@@ -142,6 +144,8 @@ form button:disabled {
   max-height: 400px;
   object-fit: contain;
   padding-bottom: 30px;
+  margin-top: 50px;
+  height: 300px;
 }
 
 .data #url {
