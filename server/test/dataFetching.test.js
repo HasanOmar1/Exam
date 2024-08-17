@@ -78,12 +78,15 @@ describe("Data fetching requests", () => {
           if (err) done(err);
           res.body.forEach((item) => {
             expect(item).to.be.an("object");
-            expect(item).to.have.property("title", "Error");
+            expect(item).to.have.property(
+              "title",
+              "This site is not available"
+            );
             expect(item).to.have.property(
               "description",
-              "Error retrieving data"
+              "This site is not available"
             );
-            expect(item).to.have.property("img", "Error retrieving data");
+            expect(item).to.have.property("img", "This site is not available");
           });
           done();
         });

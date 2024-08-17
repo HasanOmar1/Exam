@@ -47,9 +47,9 @@ export const fetchData = async (req, res, next) => {
       if (!isURL(site)) {
         data.push({
           url: site,
-          title: "Error",
-          description: "Error retrieving data",
-          img: "Error retrieving data",
+          title: "This site is not available",
+          description: "This site is not available",
+          img: "This site is not available",
         });
         continue;
       }
@@ -99,13 +99,12 @@ export const fetchData = async (req, res, next) => {
         data.push(dataInfo);
       } catch (error) {
         console.error(`Error retrieving data from ${site}`);
-        console.error("Stack trace:", error.stack);
 
         data.push({
           url: site,
-          title: "Error",
-          description: "Error retrieving data",
-          img: "Error retrieving data",
+          title: "This site is not available",
+          description: "This site is not available",
+          img: "This site is not available",
         });
       }
     }
