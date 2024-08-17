@@ -54,7 +54,7 @@ const Form = () => {
           Welcome to the <span className="important">Meta-Data</span> scrapper
           using puppeteer
         </h1>
-        <h3>Enter the URLs you want to scrap</h3>
+        <h3>Enter the URLs you want to scrape</h3>
         {<p id="error-msg">{errorMsg}</p>}
       </div>
 
