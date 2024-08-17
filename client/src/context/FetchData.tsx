@@ -10,6 +10,8 @@ type FetchDataContextValues = {
   data: DataType[] | null;
   fetchData: (urls: string) => Promise<void>;
   loading: boolean;
+  errorMsg: string;
+  setErrorMsg: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const FetchDataContext = createContext<null | FetchDataContextValues>(null);
@@ -17,6 +19,7 @@ const FetchDataContext = createContext<null | FetchDataContextValues>(null);
 const FetchDataProvider = ({ children }: FetchDataProps) => {
   const [data, setData] = useState<DataType[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState<string>("");
 
   const fetchData = async (urls: string) => {
     setLoading(true);
@@ -26,15 +29,20 @@ const FetchDataProvider = ({ children }: FetchDataProps) => {
       );
       setData(data);
       console.log(data);
+      setErrorMsg("");
     } catch (error) {
-      console.log(`Error fetching data : `, error);
+      console.log(error);
+      setErrorMsg("Please provide valid URLs");
+      setData([]);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <FetchDataContext.Provider value={{ data, fetchData, loading }}>
+    <FetchDataContext.Provider
+      value={{ data, fetchData, loading, errorMsg, setErrorMsg }}
+    >
       {children}
     </FetchDataContext.Provider>
   );

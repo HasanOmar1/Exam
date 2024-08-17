@@ -93,16 +93,15 @@ export const fetchData = async (req, res, next) => {
 
         data.push(dataInfo);
       } catch (error) {
-        next(error);
         console.error(`Error retrieving data from ${site}`);
-        console.error("Stack trace:", error.stack);
+        return next(error);
       }
     }
 
     // console.log({ data });
 
     await browser.close();
-    res.json(data);
+    return res.json(data);
   } catch (error) {
     next(error);
   }

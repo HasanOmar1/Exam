@@ -3,13 +3,12 @@ import { useFetchDataContext } from "../context/FetchData";
 import { isURL } from "../utils/isURL";
 
 const Form = () => {
-  const { fetchData, loading } = useFetchDataContext();
+  const { fetchData, loading, errorMsg, setErrorMsg } = useFetchDataContext();
   const [inputsValues, setInputsValues] = useState({
     firstInputValue: "",
     secondInputValue: "",
     thirdInputValue: "",
   });
-  const [invalidUrlMsg, setInvalidUrlMsg] = useState<string>("");
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -44,7 +43,7 @@ const Form = () => {
         thirdInputValue: "",
       });
     } else {
-      setInvalidUrlMsg("Please provide valid URLs");
+      setErrorMsg("Please provide valid URLs");
     }
   }
 
@@ -56,7 +55,7 @@ const Form = () => {
           using puppeteer
         </h1>
         <h3>Enter the URLs you want to scrap</h3>
-        {<p id="error-msg">{invalidUrlMsg}</p>}
+        {<p id="error-msg">{errorMsg}</p>}
       </div>
 
       <form onSubmit={handleSubmit}>
