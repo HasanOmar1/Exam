@@ -14,8 +14,9 @@ export const fetchData = async (req, res, next) => {
   const data = [];
   try {
     const browser = await puppeteer.launch({
-      headless: false,
-      defaultViewport: { width: 1280, height: 800 },
+      headless: true,
+      timeout: 0,
+      defaultViewport: null,
       args: [
         "--disable-setuid-sandbox",
         "--no-sandbox",
@@ -56,14 +57,15 @@ export const fetchData = async (req, res, next) => {
 
       try {
         await page.goto(site, {
-          timeout: 120000,
-          waitUntil: "load",
+          timeout: 0,
+          waitUntil: "networkidle2",
         });
 
         await page.waitForSelector(
-          `title , meta[name="title"] , meta[property="og:title"] , img`,
-          { timeout: 120000 }
+          `title , meta[name="title"] , meta[property="og:title"] , img`
         );
+
+        await page.$eval("title", (el) => el.scrollIntoView());
 
         const dataInfo = await page.evaluate((pageUrl) => {
           //
