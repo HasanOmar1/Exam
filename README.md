@@ -6,6 +6,12 @@
 
 ---
 
+### Preview
+
+![instructions](./scrapper.gif)
+
+---
+
 #### Link To The Site
 
 - Frontend : https://hasan-tolstoy-exam.netlify.app/
