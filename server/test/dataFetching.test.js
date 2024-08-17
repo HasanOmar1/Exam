@@ -12,6 +12,11 @@ describe("Data fetching requests", () => {
         if (err) done(err);
         expect(res.status).to.equal(STATUS_CODE.BAD_REQUEST);
         expect(res.body).to.be.an("object");
+        expect(res.body).to.have.all.keys("message", "stack");
+        expect(res.body).to.have.property(
+          "message",
+          "You must provide at least three URLs"
+        );
 
         done();
       });
@@ -24,6 +29,12 @@ describe("Data fetching requests", () => {
           if (err) done(err);
           expect(res.status).to.equal(STATUS_CODE.BAD_REQUEST);
           expect(res.body).to.be.an("object");
+          expect(res.body).to.have.all.keys("message", "stack");
+          expect(res.body).to.have.property(
+            "message",
+            "You must provide at least three URLs"
+          );
+
           done();
         });
     });
@@ -37,6 +48,12 @@ describe("Data fetching requests", () => {
           if (err) done(err);
           expect(res.status).to.equal(STATUS_CODE.BAD_REQUEST);
           expect(res.body).to.be.an("object");
+          expect(res.body).to.have.all.keys("message", "stack");
+          expect(res.body).to.have.property(
+            "message",
+            "You must provide at least three URLs"
+          );
+
           done();
         });
     });
