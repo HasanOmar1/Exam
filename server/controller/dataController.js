@@ -17,7 +17,7 @@ export const fetchData = async (req, res, next) => {
       throw new Error("You must provide at least three URLs");
     }
     console.log(
-      `Started Scrapping data from these websites: ${arrOfUrls.join(" - ")}`
+      `Started Scraping data from these websites: ${arrOfUrls.join(" - ")}`
     );
     const browser = await puppeteer.launch({
       headless: true,
