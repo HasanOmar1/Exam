@@ -47,7 +47,7 @@ export const fetchData = async (req, res, next) => {
     await page.setRequestInterception(true);
     page.on("request", (request) => {
       const resourceType = request.resourceType();
-      if (["image", "stylesheet", "font", "video"].includes(resourceType)) {
+      if (["stylesheet", "font", "video"].includes(resourceType)) {
         request.abort();
       } else {
         request.continue();
