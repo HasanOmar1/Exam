@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dataRoute from "./routes/dataRouter.js";
 import errorHandler from "./middlewares/errorMiddleware.js";
+import limiter from "./middlewares/rateLimiterMiddleware.js";
 import dotenv from "dotenv";
 import helmet from "helmet";
 
@@ -18,6 +19,7 @@ app.use(
 );
 app.use(express.json());
 app.use(helmet());
+app.use(limiter);
 
 app.use("/", dataRoute);
 
