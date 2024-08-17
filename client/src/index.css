@@ -85,6 +85,7 @@ form button:hover {
 form button:disabled {
   background-color: rgba(255, 0, 0, 0.524);
   color: rgb(212, 209, 209);
+  cursor: not-allowed;
 }
 
 .data-container {

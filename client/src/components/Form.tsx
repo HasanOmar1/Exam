@@ -1,14 +1,22 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFetchDataContext } from "../context/FetchData";
 
 const Form = () => {
   const { fetchData, loading } = useFetchDataContext();
-
   const [inputsValues, setInputsValues] = useState({
     firstInputValue: "",
     secondInputValue: "",
     thirdInputValue: "",
   });
+
+  // const inputRef =
+  //   useRef<React.MutableRefObject<HTMLInputElement | undefined>>();
+
+  // useEffect(() => {
+  //   if (inputRef.current) {
+  //     inputRef.current.focus();
+  //   }
+  // }, []);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -39,6 +47,7 @@ const Form = () => {
 
       <form onSubmit={handleSubmit}>
         <input
+          // ref={inputRef}
           required
           type="url"
           placeholder="URL"
