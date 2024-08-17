@@ -8,7 +8,7 @@
 
 ### Preview
 
-![instructions](./scrapper.gif)
+![preview](./site-preview.gif)
 
 ---
 
