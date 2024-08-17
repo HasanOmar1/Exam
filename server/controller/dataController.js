@@ -1,6 +1,10 @@
-import puppeteer from "puppeteer";
+import puppeteer from "puppeteer-extra";
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
 import STATUS_CODE from "../constants/statusCodes.js";
 import { isURL } from "../utils/isURL.js";
+
+// Use the stealth plugin to avoid bot detection
+puppeteer.use(StealthPlugin());
 
 export const fetchData = async (req, res, next) => {
   const { urls } = req.query;
@@ -10,11 +14,12 @@ export const fetchData = async (req, res, next) => {
   try {
     if (!arrOfUrls.length || arrOfUrls.length < 3) {
       res.status(STATUS_CODE.BAD_REQUEST);
-      throw new Error("You must provide atleast three URLs");
+      throw new Error("You must provide at least three URLs");
     }
+
     const browser = await puppeteer.launch({
-      headless: true,
-      timeout: 30000,
+      headless: true, // Set to 'false' if you want to see what's happening
+      timeout: 60000, // Increased timeout to 60 seconds
       defaultViewport: null,
       args: [
         "--disable-setuid-sandbox",
@@ -30,14 +35,20 @@ export const fetchData = async (req, res, next) => {
           ? process.env.PUPPETEER_EXECUTABLE_PATH
           : puppeteer.executablePath(),
     });
+
     const page = await browser.newPage();
 
-    await page.setRequestInterception(true);
+    // Set a more common User-Agent to mimic a real browser
+    await page.setUserAgent(
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"
+    );
 
-    // Intercept requests to ignore loading videos
+    // Enable request interception to block unnecessary resources
+    await page.setRequestInterception(true);
     page.on("request", (request) => {
-      if (request.resourceType() === "video") {
-        request.abort();
+      const resourceType = request.resourceType();
+      if (["image", "stylesheet", "font", "video"].includes(resourceType)) {
+        request.abort(); // Block images, stylesheets, fonts, and videos
       } else {
         request.continue();
       }
@@ -56,8 +67,8 @@ export const fetchData = async (req, res, next) => {
 
       try {
         await page.goto(site, {
-          timeout: 30000,
-          waitUntil: "networkidle2",
+          timeout: 60000, // Increased timeout to 60 seconds
+          waitUntil: "domcontentloaded", // Alternative to 'networkidle2'
         });
 
         await page.waitForSelector(
@@ -67,7 +78,6 @@ export const fetchData = async (req, res, next) => {
         await page.$eval("title", (el) => el.scrollIntoView());
 
         const dataInfo = await page.evaluate((pageUrl) => {
-          //
           const titleElement = document.querySelector("title")?.innerText;
           const metaTitleElement = document.querySelector('meta[name="title"]');
           const ogMetaTitleElement = document.querySelector(
@@ -98,7 +108,7 @@ export const fetchData = async (req, res, next) => {
 
         data.push(dataInfo);
       } catch (error) {
-        console.error(`Error retrieving data from ${site}`);
+        console.error(`Error retrieving data from ${site}: ${error.message}`);
 
         data.push({
           url: site,
@@ -108,8 +118,6 @@ export const fetchData = async (req, res, next) => {
         });
       }
     }
-
-    // console.log({ data });
 
     await browser.close();
     res.json(data);
