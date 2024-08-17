@@ -21,12 +21,13 @@ Things to know:
 
 - Im using free Render tier to host my server so the scraping might not work as intended because it takes long time to scrape the data which leads to navigation timeout error.
 - I fixed it by changing the rateLimiter middleware to 100 requests per minute, and I also changed the navigation timeout to 2 minutes because i noticed it takes 1 to 2 minutes to scrape.
-- [If the scraping takes more than 2 minutes then its probably the server is sleeping , give it some time ^]
 - Scraping locally will scrape pretty quickly.
 - The Design of the UI was very simple, I didnt put much effort on it.
 - I did not test the frontend because I never tried to learn how to even though I'm a fast learner :).
 - I had many difficulties with running puppeteer on Render because it needs chromium to work, but after some research I learned that i have to use Docker to make it work.
 - I also had many difficulties with fetching the data using Render because it kept giving me navigation timeout and sometimes I didn't get the correct response because of the sites bot detection, but I fixed it by installing puppeteer extra and puppeteer-extra-plugin-stealth to avoid the bots.
+
+###### - If the scraping takes more than 2 minutes then its probably the server is sleeping , give it some time ^
 
 ---
 
