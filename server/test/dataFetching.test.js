@@ -58,7 +58,7 @@ describe("Data fetching requests", () => {
         });
     });
 
-    it("Should not return an object", (done) => {
+    it("Should not return an object ( Should return an array of objects )", (done) => {
       app
         .get(
           `/fetch-metadata?urls=https://www.facebook.com/&urls=https://www.google.com&urls=https://www.youtube.com/`

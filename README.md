@@ -76,6 +76,13 @@ npm install
 npm run dev
 ```
 
+To run the tests you have to open the terminal and type:
+
+```
+cd server (if you are not in the server folder)
+npm test
+```
+
 ---
 
 ## Used technologies
