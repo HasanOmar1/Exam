@@ -12,7 +12,7 @@ export const fetchData = async (req, res, next) => {
 
   const data = [];
   try {
-    if (!arrOfUrls.length || arrOfUrls.length < 3) {
+    if (arrOfUrls.length < 3) {
       res.status(STATUS_CODE.BAD_REQUEST);
       throw new Error("You must provide at least three URLs");
     }
