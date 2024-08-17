@@ -11,10 +11,10 @@ dotenv.config();
 const app = express();
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://hasan-tolstoy-exam.netlify.app/",
-    ],
+    origin:
+      process.env.NODE_ENV === "production"
+        ? process.env.CLIENT_LINK
+        : "http://localhost:5173",
   })
 );
 app.use(express.json());
