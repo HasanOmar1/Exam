@@ -12,6 +12,7 @@ describe("Data fetching requests", () => {
         if (err) done(err);
         expect(res.status).to.equal(STATUS_CODE.BAD_REQUEST);
         expect(res.body).to.be.an("object");
+
         done();
       });
     });
@@ -76,6 +77,7 @@ describe("Data fetching requests", () => {
         .get(`/fetch-metadata?urls=facebook&urls=google&urls=youtube`)
         .end((err, res) => {
           if (err) done(err);
+          expect(res.status).to.equal(STATUS_CODE.OK);
           res.body.forEach((item) => {
             expect(item).to.be.an("object");
             expect(item).to.have.property(
