@@ -21,6 +21,8 @@ Things to know:
 
 Im using free Render tier to host my server so the server might not work as intended because it takes long time to scrape the data which leads to navigation timeout error. <br>
 I fixed it by changing the rateLimiter middleware to 100 requests per minute. <br>
+I also changed the navigation timeout to 2 minutes because i noticed it takes 1 to 2 minutes to scrape.
+<br>
 Setup the server locally and it will scrape pretty quickly.
 
 ---
