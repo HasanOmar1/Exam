@@ -3,7 +3,7 @@ import StealthPlugin from "puppeteer-extra-plugin-stealth";
 import STATUS_CODE from "../constants/statusCodes.js";
 import { isURL } from "../utils/isURL.js";
 
-// Use the stealth plugin to avoid bot detection
+// to avoid bot detection
 puppeteer.use(StealthPlugin());
 
 export const fetchData = async (req, res, next) => {
@@ -18,8 +18,8 @@ export const fetchData = async (req, res, next) => {
     }
 
     const browser = await puppeteer.launch({
-      headless: true, // Set to 'false' if you want to see what's happening
-      timeout: 60000, // Increased timeout to 60 seconds
+      headless: true,
+      timeout: 60000,
       defaultViewport: null,
       args: [
         "--disable-setuid-sandbox",
@@ -38,17 +38,17 @@ export const fetchData = async (req, res, next) => {
 
     const page = await browser.newPage();
 
-    // Set a more common User-Agent to mimic a real browser
+    // to mimic real browser
     await page.setUserAgent(
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"
     );
 
-    // Enable request interception to block unnecessary resources
+    // to block images/stylesheets/fonts/videos
     await page.setRequestInterception(true);
     page.on("request", (request) => {
       const resourceType = request.resourceType();
       if (["image", "stylesheet", "font", "video"].includes(resourceType)) {
-        request.abort(); // Block images, stylesheets, fonts, and videos
+        request.abort();
       } else {
         request.continue();
       }
@@ -67,15 +67,13 @@ export const fetchData = async (req, res, next) => {
 
       try {
         await page.goto(site, {
-          timeout: 60000, // Increased timeout to 60 seconds
-          waitUntil: "domcontentloaded", // Alternative to 'networkidle2'
+          timeout: 60000,
+          waitUntil: "domcontentloaded",
         });
 
         await page.waitForSelector(
           `title , meta[name="description"], meta[name="title"] , meta[property="og:title"] , img`
         );
-
-        await page.$eval("title", (el) => el.scrollIntoView());
 
         const dataInfo = await page.evaluate((pageUrl) => {
           const titleElement = document.querySelector("title")?.innerText;
