@@ -8,11 +8,23 @@ import helmet from "helmet";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173/",
+  })
+);
 app.use(express.json());
 app.use(helmet());
 
 app.use("/", dataRoute);
+
+app.get("/", (req, res, next) => {
+  res.send({
+    welcome: `Welcome, to start using the api type this to the url`,
+    endpoint: `/fetch-metadata?urls="The link you want to scrap"`,
+    moreInfo: `You have to add atleast three urls query parameters`,
+  });
+});
 
 app.use(errorHandler);
 

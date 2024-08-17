@@ -6,13 +6,12 @@ export const fetchData = async (req, res, next) => {
   const { urls } = req.query;
   const arrOfUrls = Array.isArray(urls) ? urls : [urls];
 
-  if (!arrOfUrls.length) {
-    res.status(STATUS_CODE.NOT_FOUND);
-    throw new Error({ error: "Please provide a URL" });
-  }
-
   const data = [];
   try {
+    if (!arrOfUrls.length || arrOfUrls.length < 3) {
+      res.status(STATUS_CODE.BAD_REQUEST);
+      throw new Error("You must provide atleast three URLs");
+    }
     const browser = await puppeteer.launch({
       headless: true,
       timeout: 30000,
