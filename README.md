@@ -8,7 +8,12 @@
 
 ### Preview
 
-![preview](./site-preview.gif)
+- Gif
+  ![preview](./site-preview.gif)
+  <br>
+  <br>
+- Youtube
+  [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/uedWgeJFZw0/0.jpg)](https://www.youtube.com/watch?v=uedWgeJFZw0)
 
 ---
 
