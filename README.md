@@ -8,12 +8,15 @@
 
 ### Preview
 
-- Gif
-  ![preview](./site-preview.gif)
-  <br>
-  <br>
-- Youtube
-  [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/uedWgeJFZw0/0.jpg)](https://www.youtube.com/watch?v=uedWgeJFZw0)
+#### Gif
+
+![preview](./site-preview.gif)
+<br>
+<br>
+
+#### Yotube
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/uedWgeJFZw0/0.jpg)](https://www.youtube.com/watch?v=uedWgeJFZw0)
 
 ---
 
