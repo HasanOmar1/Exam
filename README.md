@@ -14,7 +14,7 @@
 <br>
 <br>
 
-#### Yotube
+#### Youtube Video
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/uedWgeJFZw0/0.jpg)](https://www.youtube.com/watch?v=uedWgeJFZw0)
 
