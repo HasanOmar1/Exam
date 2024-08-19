@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { DataType } from "../types/dataTypes";
 
 type FetchDataProps = {
@@ -12,6 +12,7 @@ type FetchDataContextValues = {
   loading: boolean;
   errorMsg: string;
   setErrorMsg: React.Dispatch<React.SetStateAction<string>>;
+  isServerLoading: boolean;
 };
 
 const FetchDataContext = createContext<null | FetchDataContextValues>(null);
@@ -20,6 +21,11 @@ const FetchDataProvider = ({ children }: FetchDataProps) => {
   const [data, setData] = useState<DataType[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
+  const [isServerLoading, setIsServerLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    wakeUpTheServer();
+  }, []);
 
   const fetchData = async (urls: string) => {
     setLoading(true);
@@ -39,9 +45,26 @@ const FetchDataProvider = ({ children }: FetchDataProps) => {
     }
   };
 
+  const wakeUpTheServer = async () => {
+    try {
+      const { data } = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/`);
+      setIsServerLoading(false);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <FetchDataContext.Provider
-      value={{ data, fetchData, loading, errorMsg, setErrorMsg }}
+      value={{
+        data,
+        fetchData,
+        loading,
+        errorMsg,
+        setErrorMsg,
+        isServerLoading,
+      }}
     >
       {children}
     </FetchDataContext.Provider>

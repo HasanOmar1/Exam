@@ -170,3 +170,12 @@ form button:disabled {
   color: greenyellow;
   padding: 0;
 }
+
+.sleep-msg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 50px;
+}
