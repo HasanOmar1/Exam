@@ -1,4 +1,4 @@
-# Tolstoy Exam - Meta Data Fetcher
+# Tolstoy Exam - Meta Data Scrapper
 
 ### Instructions
 
