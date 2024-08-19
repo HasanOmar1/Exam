@@ -1,6 +1,6 @@
 import Data from "./components/Data";
 import Form from "./components/Form";
-import { useFetchDataContext } from "./context/FetchData";
+import { useFetchDataContext } from "./hooks/useFetchDataContext";
 
 function App() {
   const { data, loading, isServerLoading } = useFetchDataContext();

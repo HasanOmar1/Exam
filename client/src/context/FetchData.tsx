@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { DataType } from "../types/dataTypes";
 
 type FetchDataProps = {
@@ -15,7 +15,9 @@ type FetchDataContextValues = {
   isServerLoading: boolean;
 };
 
-const FetchDataContext = createContext<null | FetchDataContextValues>(null);
+export const FetchDataContext = createContext<null | FetchDataContextValues>(
+  null
+);
 
 const FetchDataProvider = ({ children }: FetchDataProps) => {
   const [data, setData] = useState<DataType[] | null>(null);
@@ -69,15 +71,6 @@ const FetchDataProvider = ({ children }: FetchDataProps) => {
       {children}
     </FetchDataContext.Provider>
   );
-};
-
-export const useFetchDataContext = () => {
-  const context = useContext(FetchDataContext);
-
-  if (!context) {
-    throw new Error("This component is not wrapped in FetchDataProvider");
-  }
-  return context;
 };
 
 export default FetchDataProvider;

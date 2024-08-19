@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { useFetchDataContext } from "../context/FetchData";
 import { isURL } from "../utils/isURL";
+import { useFetchDataContext } from "../hooks/useFetchDataContext";
 
 const Form = () => {
   const { fetchData, loading, errorMsg, setErrorMsg } = useFetchDataContext();
