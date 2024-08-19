@@ -120,6 +120,10 @@ npm test
 - Supertest
 - Helmet
 
+#### Endpoints testing
+
+- Postman
+
 ---
 
 #### Route example for testing
